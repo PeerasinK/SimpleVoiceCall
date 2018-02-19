@@ -30,6 +30,12 @@
         .then(menu.close.bind(menu));
     };
 
+    var phoneCall = function() {
+      var phoneNumber = document.getElementById('testnumber').value;
+      alert('tel:' + phoneNumber);
+      window.open('tel:' + phoneNumber, '_system');
+    };
+
   </script>
 </head>
 <body>
@@ -65,8 +71,12 @@
         </div>
       </ons-toolbar>
       <p style="text-align: center; opacity: 0.6; padding-top: 20px;">
-        Place button to call <br>
-        // Button here
+        <p style="text-align: center">
+          <ons-input id="testnumber" type="number" modifier="underbar" placeholder="number" float></ons-input>
+        </p>
+        <p style="text-align: center">
+          <ons-button onclick="phoneCall()">Press to call</ons-button>
+        </p>
       </p>
       
     </ons-page>
