@@ -6,6 +6,7 @@
   <meta http-equiv="Content-Security-Policy" content="default-src * data: gap: https://ssl.gstatic.com; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
   <script src="components/loader.js"></script>
   <script src="lib/onsenui/js/onsenui.min.js"></script>
+  <script src="lib/artyom/build/artyom.window.min.js"></script>
 
   <link rel="stylesheet" href="components/loader.css">
   <link rel="stylesheet" href="lib/onsenui/css/onsenui.css">
@@ -13,6 +14,13 @@
   <link rel="stylesheet" href="css/style.css">
 
   <script>
+    /*** test ***/
+    var nameList = {};
+    nameList["boy"] = '0866666236'; // Pui
+    nameList["mom"] = '0851170747';
+
+
+    /*** init ***/
     ons.ready(function() {
       console.log("Onsen UI is ready!");
     });
@@ -30,10 +38,38 @@
         .then(menu.close.bind(menu));
     };
 
+    /*** home ***/
+    const artyom = new Artyom();
+    artyom.initialize({
+            lang:"en-GB",// A lot of languages are supported. Read the docs !
+            continuous:false,// recognize 1 command and stop listening !
+            listen:true, // Start recognizing
+            debug:true, // Show everything in the console
+            speed:1 // talk normally
+        });
+
+    var UserDictation = artyom.newDictation({
+        continuous:true, // Don't stop never because i have https connection
+        onResult:function(result){
+          alert(result);
+          // if(nameList[result]) {
+          //   window.open('tel:' + nameList[result], '_system');
+          // }
+        },
+        onStart:function(){
+            console.log('start speech');
+        },
+        onEnd:function(){
+            console.log('stop speech');
+        }
+    });
+
+    var activateVoiceCall = function() {
+      UserDictation.start();
+    };
+
     var phoneCall = function() {
-      var phoneNumber = document.getElementById('testnumber').value;
-      alert('tel:' + phoneNumber);
-      window.open('tel:' + phoneNumber, '_system');
+      UserDictation.stop();
     };
 
   </script>
@@ -75,7 +111,7 @@
           <ons-input id="testnumber" type="number" modifier="underbar" placeholder="number" float></ons-input>
         </p>
         <p style="text-align: center">
-          <ons-button onclick="phoneCall()">Press to call</ons-button>
+          <ons-button onmousedown="activateVoiceCall()" onmouseup="phoneCall()">Hold to call</ons-button>
         </p>
       </p>
       
@@ -122,7 +158,6 @@
         <p style="text-align: center; opacity: 0.6; padding-top: 20px; font-size:15px;">
             I am a beginner for Frontend Developer, this is my first app that I use Typescpt framework.
         </p>
-
   </ons-page>
   </ons-template>
 
