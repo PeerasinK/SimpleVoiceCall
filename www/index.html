@@ -1,9 +1,11 @@
 <!DOCTYPE HTML>
 <html>
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <meta http-equiv="Content-Security-Policy" content="default-src * data: gap: https://ssl.gstatic.com; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
+
   <script src="components/loader.js"></script>
   <script src="lib/onsenui/js/onsenui.min.js"></script>
   <script src="lib/artyom/build/artyom.window.min.js"></script>
@@ -14,23 +16,17 @@
   <link rel="stylesheet" href="css/style.css">
 
   <script>
-    /*** test ***/
-    var nameList = {};
-    nameList["boy"] = '0866666236'; // Pui
-    nameList["mom"] = '0851170747';
-
-
     /*** init ***/
-    ons.ready(function() {
+    ons.ready(function () {
       console.log("Onsen UI is ready!");
     });
 
     window.fn = {};
-    window.fn.open = function() {
+    window.fn.open = function () {
       var menu = document.getElementById('menu');
       menu.open();
     };
-    window.fn.load = function(page) {
+    window.fn.load = function (page) {
       var content = document.getElementById('content');
       var menu = document.getElementById('menu');
       content
@@ -39,41 +35,48 @@
     };
 
     /*** home ***/
+    // speech ecognition not work yet
+    // https://ourcodeworld.com/articles/read/401/how-to-use-the-speech-recognition-api-in-cordova
+    // https://www.npmjs.com/package/cordova-plugin-speechrecognition
+    // https://developer.android.com/reference/android/Manifest.permission.html#RECORD_AUDIO
+    var nameList = {}; // constant for testing
+    nameList["boy"] = '0866666236'; // Pui
+    nameList["mom"] = '0851170747';
+
     const artyom = new Artyom();
     artyom.initialize({
-            lang:"en-GB",// A lot of languages are supported. Read the docs !
-            continuous:false,// recognize 1 command and stop listening !
-            listen:true, // Start recognizing
-            debug:true, // Show everything in the console
-            speed:1 // talk normally
-        });
-
-    var UserDictation = artyom.newDictation({
-        continuous:true, // Don't stop never because i have https connection
-        onResult:function(result){
-          alert(result);
-          // if(nameList[result]) {
-          //   window.open('tel:' + nameList[result], '_system');
-          // }
-        },
-        onStart:function(){
-            console.log('start speech');
-        },
-        onEnd:function(){
-            console.log('stop speech');
-        }
+      lang: "en-GB",
+      continuous: false,
+      //debug:true,
+      speed: 1
     });
 
-    var activateVoiceCall = function() {
+    var UserDictation = artyom.newDictation({
+      continuous: true,
+      onResult: function (result) {
+        alert(result);
+        // if (nameList[result]) {
+        //   window.open('tel:' + nameList[result], '_system');
+        // }
+      },
+      onStart: function () {
+        console.log('start speech');
+      },
+      onEnd: function () {
+        console.log('stop speech');
+      }
+    });
+
+    var activateVoiceCall = function () {
       UserDictation.start();
     };
 
-    var phoneCall = function() {
+    var deactivateVoiceCall = function () {
       UserDictation.stop();
     };
-
   </script>
 </head>
+
 <body>
   <ons-splitter>
     <ons-splitter-side id="menu" side="left" width="220px" collapse swipeable>
@@ -111,55 +114,57 @@
           <ons-input id="testnumber" type="number" modifier="underbar" placeholder="number" float></ons-input>
         </p>
         <p style="text-align: center">
-          <ons-button onmousedown="activateVoiceCall()" onmouseup="phoneCall()">Hold to call</ons-button>
+          <ons-button onmousedown="activateVoiceCall()" onmouseup="deactivateVoiceCall()">Hold to call</ons-button>
         </p>
       </p>
-      
+
     </ons-page>
   </ons-template>
 
   <ons-template id="settings.html">
-  <ons-page>
-    <ons-toolbar>
-      <div class="left">
-        <ons-toolbar-button onclick="fn.open()">
-          <ons-icon icon="ion-navicon, material:md-menu"></ons-icon>
-        </ons-toolbar-button>
-      </div>
-      <div class="center">
-        Settings
-      </div>
-    </ons-toolbar>
-    <p style="text-align: center; opacity: 0.6; padding-top: 20px;">
-        // Button to record voice ---- Button to delete // 
-    </p>
-    <p style="text-align: center; opacity: 0.6; padding-top: 20px; font-size:15px;">
-        // Render all list of each contract  <br>
-        // - Pic (load from contract)  <br> 
-        // - Name (load from contract)  <br>
-        // - Number (load from contract)  <br>
-        // - button for listen voice record  <br>
+    <ons-page>
+      <ons-toolbar>
+        <div class="left">
+          <ons-toolbar-button onclick="fn.open()">
+            <ons-icon icon="ion-navicon, material:md-menu"></ons-icon>
+          </ons-toolbar-button>
+        </div>
+        <div class="center">
+          Settings
+        </div>
+      </ons-toolbar>
+      <p style="text-align: center; opacity: 0.6; padding-top: 20px;">
+        // Button to record voice ---- Button to delete //
       </p>
-  </ons-page>
+      <p style="text-align: center; opacity: 0.6; padding-top: 20px; font-size:15px;">
+        // Render all list of each contract
+        <br> // - Pic (load from contract)
+        <br> // - Name (load from contract)
+        <br> // - Number (load from contract)
+        <br> // - button for listen voice record
+        <br>
+      </p>
+    </ons-page>
   </ons-template>
 
   <ons-template id="about.html">
-  <ons-page>
+    <ons-page>
       <ons-toolbar>
-          <div class="left">
-            <ons-toolbar-button onclick="fn.open()">
-              <ons-icon icon="ion-navicon, material:md-menu"></ons-icon>
-            </ons-toolbar-button>
-          </div>
-          <div class="center">
-              About
-          </div>
-        </ons-toolbar>
-        <p style="text-align: center; opacity: 0.6; padding-top: 20px; font-size:15px;">
-            I am a beginner for Frontend Developer, this is my first app that I use Typescpt framework.
-        </p>
-  </ons-page>
+        <div class="left">
+          <ons-toolbar-button onclick="fn.open()">
+            <ons-icon icon="ion-navicon, material:md-menu"></ons-icon>
+          </ons-toolbar-button>
+        </div>
+        <div class="center">
+          About
+        </div>
+      </ons-toolbar>
+      <p style="text-align: center; opacity: 0.6; padding-top: 20px; font-size:15px;">
+        I am a beginner for Frontend Developer, this is my first app that I use Typescpt framework.
+      </p>
+    </ons-page>
   </ons-template>
 
 </body>
+
 </html>
